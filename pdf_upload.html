@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF File Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            background-color: #f9f9f9;
+        }
+        .upload-container {
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            max-width: 400px;
+            margin: auto;
+            border-radius: 8px;
+        }
+        input[type="file"] {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <div class="upload-container">
+        <h2>Upload PDF File</h2>
+        <form id="uploadForm" action="/pdfUpload" method="post" enctype="multipart/form-data">
+            <input type="file" name="pdfFile" accept="application/pdf" required>
+            <br>
+            <button type="submit">Upload</button>
+        </form>
+        <p id="status"></p>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            const fileInput = document.querySelector('input[type="file"]');
+            const file = fileInput.files[0];
+
+            if (file && file.type !== "application/pdf") {
+                event.preventDefault();
+                document.getElementById('status').textContent = "Please upload a valid PDF file.";
+                document.getElementById('status').style.color = "red";
+            }
+        });
+    </script>
+</body>
+</html>
